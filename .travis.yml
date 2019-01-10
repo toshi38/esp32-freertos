@@ -1,0 +1,14 @@
+sudo: required
+
+services:
+- docker
+
+script:
+- docker build -t toshi38/esp32-freertos .
+
+after_success:
+- echo $TRAVIS_BRANCH
+- if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; then
+  docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+  docker push toshi38/esp32-freertos;
+  fi
